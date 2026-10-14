@@ -1,0 +1,100 @@
+import type { Lang } from '../types';
+
+const DOC = {
+  id: {
+    billTo: 'Ditagihkan kepada',
+    from: 'Dari',
+    number: 'No.',
+    issueDate: 'Tanggal',
+    dueDate: 'Jatuh tempo',
+    reference: 'Referensi',
+    no: 'No',
+    description: 'Deskripsi',
+    qty: 'Qty',
+    price: 'Harga',
+    discount: 'Diskon',
+    amount: 'Jumlah',
+    subtotal: 'Subtotal',
+    taxBase: 'DPP',
+    total: 'Total',
+    grandTotal: 'Total tagihan',
+    paid: 'Sudah dibayar',
+    balance: 'Sisa tagihan',
+    terbilang: 'Terbilang',
+    payTo: 'Pembayaran',
+    accountHolder: 'a.n.',
+    scanQris: 'Scan QRIS',
+    notes: 'Catatan',
+    terms: 'Syarat & ketentuan',
+    regards: 'Hormat kami',
+    page: 'Hal.',
+    of: 'dari',
+    paidStamp: 'LUNAS',
+    voidStamp: 'BATAL',
+    taxId: 'NPWP',
+    attn: 'U.p.',
+    receipt: 'KWITANSI',
+    receivedFrom: 'Telah terima dari',
+    amountOf: 'Uang sejumlah',
+    forPayment: 'Untuk pembayaran',
+    receiver: 'Penerima',
+    method: 'Metode',
+    invoiceRef: 'Invoice',
+  },
+  en: {
+    billTo: 'Bill to',
+    from: 'From',
+    number: 'No.',
+    issueDate: 'Date',
+    dueDate: 'Due date',
+    reference: 'Reference',
+    no: '#',
+    description: 'Description',
+    qty: 'Qty',
+    price: 'Price',
+    discount: 'Discount',
+    amount: 'Amount',
+    subtotal: 'Subtotal',
+    taxBase: 'Tax base',
+    total: 'Total',
+    grandTotal: 'Amount due',
+    paid: 'Paid',
+    balance: 'Balance due',
+    terbilang: 'In words',
+    payTo: 'Payment',
+    accountHolder: 'Acc. name',
+    scanQris: 'Scan QRIS',
+    notes: 'Notes',
+    terms: 'Terms & conditions',
+    regards: 'Sincerely',
+    page: 'Page',
+    of: 'of',
+    paidStamp: 'PAID',
+    voidStamp: 'VOID',
+    taxId: 'Tax ID',
+    attn: 'Attn.',
+    receipt: 'RECEIPT',
+    receivedFrom: 'Received from',
+    amountOf: 'The sum of',
+    forPayment: 'For payment of',
+    receiver: 'Received by',
+    method: 'Method',
+    invoiceRef: 'Invoice',
+  },
+} as const;
+
+export type DocLabels = { [K in keyof (typeof DOC)['id']]: string };
+
+export function docLabels(lang: Lang): DocLabels {
+  return DOC[lang];
+}
+
+export function formatDate(iso: string, lang: Lang, style: 'long' | 'short' = 'long'): string {
+  if (!iso) return '';
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Intl.DateTimeFormat(lang === 'id' ? 'id-ID' : 'en-GB', {
+    day: 'numeric',
+    month: style === 'long' ? 'long' : 'short',
+    year: 'numeric',
+  }).format(new Date(y, m - 1, d));
+}
